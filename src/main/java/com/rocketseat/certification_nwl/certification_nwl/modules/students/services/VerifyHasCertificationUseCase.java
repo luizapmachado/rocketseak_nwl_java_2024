@@ -1,16 +1,19 @@
 package com.rocketseat.certification_nwl.certification_nwl.modules.students.services;
 
 import com.rocketseat.certification_nwl.certification_nwl.modules.students.dto.VerifyHasCertificationDTO;
+import com.rocketseat.certification_nwl.certification_nwl.modules.students.repositories.CertificationStudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VerifyHasCertificationUseCase {
 
-    public boolean execute(VerifyHasCertificationDTO dto) {
-        if (dto.getEmail().equals("luiza@gmail.com") && dto.getTecnology().equals("JAVA")) {
-            return true;
-        }
+    @Autowired
+    private CertificationStudentRepository certificationStudentRepository;
 
-        return false;
+    public boolean execute(VerifyHasCertificationDTO dto) {
+        var result = this.certificationStudentRepository.findByStudentEmailAndTechnology(dto.getEmail(),
+                dto.getTechnology());
+        return !result.isEmpty();
     }
 }
